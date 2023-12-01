@@ -10,10 +10,10 @@ fun main() {
     val code = """
 import util.loadAsList
 
-class Day$number {
+class Day$number(
+    private val input : List<String> = loadAsList(day = $day)
+) {
     
-     val input = loadAsList($day)   
-
     fun part1(): Int {
         TODO("Not yet implemented")
     }

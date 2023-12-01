@@ -1,8 +1,8 @@
 import util.loadAsList
 
-class Day01 {
-    
-    private val input = loadAsList(day = 1)
+class Day01(
+    private val input: List<String> = loadAsList(day = 1)
+) {
 
     fun part1(): Int =
         input.map { line -> line.filter { it.isDigit() } }
