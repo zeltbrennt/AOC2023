@@ -27,5 +27,5 @@ class Day01 {
 fun main() {
     val solver = Day01()
     println(solver.part1())
-    println(solver.part2()) //53407 too high
+    println(solver.part2())
 }
