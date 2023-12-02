@@ -24,7 +24,7 @@ class Day$number(
 }
 
 fun main() {
-    val solver = Day01()
+    val solver = Day${number}()
     println(solver.part1())
     println(solver.part2())
 }
