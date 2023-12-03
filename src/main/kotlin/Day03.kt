@@ -36,18 +36,23 @@ class Day03(
 
 
     fun part2(): Int {
-        val gears = parts.filter { it.value == '*' }.map { it.key to getNeighbors(it.key, 1) }
-            .associate { it.first to it.second }
-        val numbersToCheck = numbers.filter {
-            getNeighbors(it.key, it.value.length).any { it in gears.keys }
-        }.map { it.key to getNumberCoords(it.key, it.value.length) }
-            .associate { it.first to it.second }
-        val correctGears =
-            gears.map { (k, v) -> k to numbersToCheck.filter { (_, y) -> v.any { it in y } }.map { it.key } }
-                .filter { it.second.size == 2 }
-                .map { it.second.map { numbers[it] } }
-                .sumOf { it.map { it?.toInt() ?: 0 }.reduce { a, b -> a * b } }
-        return correctGears
+        //all parts that are gears
+        val gears = parts.filter { it.value == '*' }.keys.associateWith { getNeighbors(it, 1) }
+        // all numbers that are part numbers of gears
+        val numbersToCheck = numbers.filter { (coord, number) ->
+            getNeighbors(coord, number.length).any { it in gears.keys }
+        }.keys.associateWith { coord -> getNumberCoords(coord, numbers[coord]?.length ?: 0) }
+        // gears and their numbers attached
+        val gearsWithNumbers = gears.entries.associate { (coord, gearBoarder) ->
+            coord to numbersToCheck
+                .filter { (_, numberCoords) -> gearBoarder.any { it in numberCoords } }
+                .map { it.key }
+        }
+        return gearsWithNumbers
+            .filter { it.value.size == 2 }
+            .values
+            .map { number -> number.map { numbers[it] ?: "" } }
+            .sumOf { gear -> gear.map { it.toInt() }.reduce { a, b -> a * b } }
     }
 
     private fun getNeighbors(cell: Cell, len: Int): List<Cell> {
@@ -77,10 +82,4 @@ fun main() {
     println(solver.part2())
 }
 
-
 data class Cell(val x: Int, val y: Int)
-data class Grid(val content: List<String>) {
-    operator fun get(cell: Cell) = get(cell.y, cell.x)
-    operator fun get(x: Int, y: Int) = content.getOrNull(y)?.getOrNull(x)
-    operator fun iterator() = content.iterator()
-}
