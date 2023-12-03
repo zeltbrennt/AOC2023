@@ -4,14 +4,16 @@ class Day03(
     private val input: List<String> = loadAsList(day = 3)
 ) {
 
-    private val numbers = mutableMapOf<Cell, String>()
-    private val parts = mutableMapOf<Cell, Char>()
+    private val numbers: Map<Cell, String>
+    private val parts: Map<Cell, Char>
 
     init {
+        val num = mutableMapOf<Cell, String>()
+        val prt = mutableMapOf<Cell, Char>()
         var currentNumber = ""
         var startIndex = Cell(-1, -1)
         for (y in input.indices) {
-            if (currentNumber != "") numbers[startIndex] = currentNumber
+            if (currentNumber != "") num[startIndex] = currentNumber
             currentNumber = ""
             startIndex = Cell(-1, -1)
             for (x in input[y].indices) {
@@ -20,12 +22,14 @@ class Day03(
                     if (currentNumber == "") startIndex = Cell(x, y)
                     currentNumber += cell
                 } else {
-                    if (cell != '.') parts[Cell(x, y)] = cell
-                    if (currentNumber != "") numbers[startIndex] = currentNumber
+                    if (cell != '.') prt[Cell(x, y)] = cell
+                    if (currentNumber != "") num[startIndex] = currentNumber
                     currentNumber = ""
                 }
             }
         }
+        numbers = num.toMap()
+        parts = prt.toMap()
     }
 
     fun part1(): Int {
@@ -56,20 +60,22 @@ class Day03(
     }
 
     private fun getNeighbors(cell: Cell, len: Int): List<Cell> {
-        val coords = mutableListOf<Cell>()
-        for (y in -1..1) {
-            for (x in -1..len) {
-                if (y == 0 && x in 0..<len) continue
-                coords.add(Cell(cell.x + x, cell.y + y))
+        val coords = buildList {
+            for (y in -1..1) {
+                for (x in -1..len) {
+                    if (y == 0 && x in 0..<len) continue
+                    add(Cell(cell.x + x, cell.y + y))
+                }
             }
         }
         return coords
     }
 
     private fun getNumberCoords(cell: Cell, len: Int): List<Cell> {
-        val coords = mutableListOf<Cell>()
-        for (i in 0..<len) {
-            coords.add(Cell(cell.x + i, cell.y))
+        val coords = buildList {
+            for (i in 0..<len) {
+                add(Cell(cell.x + i, cell.y))
+            }
         }
         return coords
     }
