@@ -4,67 +4,69 @@ class Day03(
     private val input: List<String> = loadAsList(day = 3)
 ) {
 
-    private val schematic = Grid(input)
-    private val numbers = mutableMapOf<Pair<Int, Int>, String>()
-    private val gears = mutableMapOf<Pair<Int, Int>, String>()
+    private val numbers = mutableMapOf<Cell, String>()
+    private val parts = mutableMapOf<Cell, Char>()
 
-    fun part1(): Int {
+    init {
         var currentNumber = ""
-        var isEnginePart = false
-        var solution = 0
+        var startIndex = Cell(-1, -1)
         for (y in input.indices) {
-            solution += if (isEnginePart) currentNumber.toInt() else 0
-            isEnginePart = false
+            if (currentNumber != "") numbers[startIndex] = currentNumber
             currentNumber = ""
+            startIndex = Cell(-1, -1)
             for (x in input[y].indices) {
                 val cell = input[y][x]
                 if (cell.isDigit()) {
+                    if (currentNumber == "") startIndex = Cell(x, y)
                     currentNumber += cell
-                    isEnginePart = if (!isEnginePart) hasPartAttached(x, y) else true
-                } else if (currentNumber != "") {
-                    solution += if (isEnginePart) currentNumber.toInt() else 0
-                    isEnginePart = false
+                } else {
+                    if (cell != '.') parts[Cell(x, y)] = cell
+                    if (currentNumber != "") numbers[startIndex] = currentNumber
                     currentNumber = ""
                 }
             }
         }
-        return solution
     }
 
-    private fun hasPartAttached(x: Int, y: Int): Boolean {
-        return listOf(
-            x to y + 1,
-            x to y - 1,
-            x + 1 to y,
-            x - 1 to y,
-            x + 1 to y + 1,
-            x - 1 to y + 1,
-            x + 1 to y - 1,
-            x - 1 to y - 1
-        ).any {
-            val n = input.getOrNull(it.second)?.getOrNull(it.first)
-            !".0123456789".contains(n ?: '.')
-        }
+    fun part1(): Int {
+        return numbers.filter {
+            getNeighbors(it.key, it.value.length).any { it in parts.keys }
+        }.map { it.value.toInt() }.sum()
     }
+
 
     fun part2(): Int {
-        for (y in input.indices) {
-            for (x in input[y].indices) {
-                val cell = input[y][x]
-                if (cell == '*') {
-
-                }
-            }
-        }
+        val gears = parts.filter { it.value == '*' }.map { it.key to getNeighbors(it.key, 1) }
+            .associate { it.first to it.second }
+        val numbersToCheck = numbers.filter {
+            getNeighbors(it.key, it.value.length).any { it in gears.keys }
+        }.map { it.key to getNumberCoords(it.key, it.value.length) }
+            .associate { it.first to it.second }
+        val correctGears =
+            gears.map { (k, v) -> k to numbersToCheck.filter { (_, y) -> v.any { it in y } }.map { it.key } }
+                .filter { it.second.size == 2 }
+                .map { it.second.map { numbers[it] } }
+                .sumOf { it.map { it?.toInt() ?: 0 }.reduce { a, b -> a * b } }
+        return correctGears
     }
 
-    private fun getPartCoords(): List<Cell> {
-        val parts = mutableListOf<Cell>()
-        for (y in input.indices) {
-            for (x in input[y].indices)
-                parts.add(Cell(x, y))
+    private fun getNeighbors(cell: Cell, len: Int): List<Cell> {
+        val coords = mutableListOf<Cell>()
+        for (y in -1..1) {
+            for (x in -1..len) {
+                if (y == 0 && x in 0..<len) continue
+                coords.add(Cell(cell.x + x, cell.y + y))
+            }
         }
-        return parts
+        return coords
+    }
+
+    private fun getNumberCoords(cell: Cell, len: Int): List<Cell> {
+        val coords = mutableListOf<Cell>()
+        for (i in 0..<len) {
+            coords.add(Cell(cell.x + i, cell.y))
+        }
+        return coords
     }
 
 }
