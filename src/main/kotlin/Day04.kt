@@ -1,5 +1,6 @@
 import util.loadAsList
 import kotlin.math.pow
+import kotlin.time.measureTime
 
 class Day04(
     private val input: List<String> = loadAsList(day = 4)
@@ -22,11 +23,8 @@ class Day04(
     }
 
     fun part1(): Int {
-        return matches.sumOf {
-            if (it > 0) 2.0.pow(it - 1) else 0.0
-        }.toInt()
+        return matches.sumOf { 2.0.pow(it - 1).toInt() }
     }
-
 
     fun part2(): Int {
         val cards = MutableList(input.size) { 1 }
@@ -42,7 +40,7 @@ class Day04(
 
 fun main() {
     val solver = Day04()
-    println(solver.part1())
-    println(solver.part2())
+    measureTime { solver.part1().also { print("Part 1: $it".padEnd(40, ' ')) } }.also { println("$it") }
+    measureTime { solver.part2().also { print("Part 2: $it".padEnd(40, ' ')) } }.also { println("$it") }
 }
         

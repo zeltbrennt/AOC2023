@@ -4,7 +4,7 @@ import java.io.File
 
 fun main() {
 
-    val day = 2
+    val day = 5
 
     val number = day.toString().padStart(2, '0')
     val code = """
@@ -25,8 +25,8 @@ class Day$number(
 
 fun main() {
     val solver = Day${number}()
-    println(solver.part1())
-    println(solver.part2())
+    measureTime { solver.part1().also { print("Part 1: ${'$'}it".padEnd(40, ' ')) } }.also { println("${'$'}it") }
+    measureTime { solver.part2().also { print("Part 2: ${'$'}it".padEnd(40, ' ')) } }.also { println("${'$'}it") }
 }
         """
     val test = """
@@ -43,14 +43,14 @@ class Day${number}Test {
     @DisplayName("Part 1")
     fun day${number}_part01_example01() {
         val solution = solver.part1()
-        assertEquals(, solution)
+        assertEquals(0, solution)
     }
     
     @Test
     @DisplayName("Part 2")
     fun day${number}_part02_example01() {
         val solution = solver.part2()
-        assertEquals(, solution)
+        assertEquals(0, solution)
     }
 
 } 
