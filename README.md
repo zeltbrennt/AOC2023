@@ -18,3 +18,8 @@ Much harder again. Solved Part1 while scanning through the field and checking fo
 Literally edge case got me, where numbers may end on the last column -> the next digit is part of a different number.
 For part 2 I scrapped the approach and tried to word with the indices of numbers and gears. I still think the code is
 messy, there is surely an easier way.
+
+## Day04: Scratchcards
+
+Parsing the input correctly is most of the work. Set-operations make this a breeze. Once both the formulas for
+part 1 and part 2 was clear, the implementation wasn't difficult as well. 
