@@ -1,33 +1,24 @@
 import util.loadAsList
-import java.lang.Math.pow
 import kotlin.math.pow
 
 class Day04(
     private val input: List<String> = loadAsList(day = 4)
 ) {
 
-    private val winning: List<Set<Int>> = buildList {
-        input.forEach { line ->
-            add(line.substringAfter(":")
-                .substringBefore("|")
-                .trim()
-                .split(Regex("\\s+"))
-                .map { it.toInt() }
-                .toSet())
-        }
-    }
-    private val numbers: List<Set<Int>> = buildList {
-        input.forEach { line ->
-            add(line.substringAfter("|")
-                .trim()
-                .split(Regex("\\s+"))
-                .map { it.toInt() }
-                .toSet())
-        }
-    }
-
-    private val matches = winning.zip(numbers).map { (win, num) ->
-        win.intersect(num).size
+    private val matches = input.map { line ->
+        line.substringAfter(":")
+            .substringBefore("|")
+            .trim()
+            .split(Regex("\\s+"))
+            .map { it.toInt() }
+            .toSet()
+            .intersect(
+                line.substringAfter("|")
+                    .trim()
+                    .split(Regex("\\s+"))
+                    .map { it.toInt() }
+                    .toSet())
+            .size
     }
 
     fun part1(): Int {
