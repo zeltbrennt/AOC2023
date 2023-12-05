@@ -22,4 +22,10 @@ messy, there is surely an easier way.
 ## Day04: Scratchcards
 
 Parsing the input correctly is most of the work. Set-operations make this a breeze. Once both the formulas for
-part 1 and part 2 was clear, the implementation wasn't difficult as well. 
+part 1 and part 2 was clear, the implementation wasn't difficult as well.
+
+## Day05: If You Give A Seed A Fertilizer
+
+Parsing the input was a little tedious, but separate maps work fine. Part 1 was again straight forward, but for part 2
+the search space blew up. Since I wanted to find a minimum, I implemented a reverse search, which is still
+brute forcing but runs in ok time.
