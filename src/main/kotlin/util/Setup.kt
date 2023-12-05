@@ -4,11 +4,12 @@ import java.io.File
 
 fun main() {
 
-    val day = 5
+    val day = 6
 
     val number = day.toString().padStart(2, '0')
     val code = """
 import util.loadAsList
+import kotlin.time.measureTime
 
 class Day$number(
     private val input : List<String> = loadAsList(day = $day)
@@ -24,7 +25,8 @@ class Day$number(
 }
 
 fun main() {
-    val solver = Day${number}()
+    var solver: Day${number}
+    measureTime { solver = Day${number}() }.also { println("${'$'}{"init".padEnd(40, ' ')}${'$'}{it}") }
     measureTime { solver.part1().also { print("Part 1: ${'$'}it".padEnd(40, ' ')) } }.also { println("${'$'}it") }
     measureTime { solver.part2().also { print("Part 2: ${'$'}it".padEnd(40, ' ')) } }.also { println("${'$'}it") }
 }
