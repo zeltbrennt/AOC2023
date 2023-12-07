@@ -13,20 +13,20 @@ data class Bid(val hand: Hand, val value: Int)
 
 data class Hand(val cards: List<Card>, val rules: Rules) : Comparable<Hand> {
 
-    private val cardsByType = cards.groupBy { it }.mapValues { it.value.size }
+    private val cardGroupSizes = cards.groupingBy { it }.eachCount().map { it.value }
 
     private val handType: HandType =
-        if (cardsByType.size == 1) HandType.FIVE_OF_A_KIND
-        else if (cardsByType.containsValue(4)) HandType.FOUR_OF_A_KIND
-        else if (cardsByType.containsValue(3) && cardsByType.containsValue(2)) HandType.FULL_HOUSE
-        else if (cardsByType.containsValue(3) && cardsByType.size == 3) HandType.THREE_OF_A_KIND
-        else if (cardsByType.containsValue(2) && cardsByType.size == 3) HandType.TWO_PAIR
-        else if (cardsByType.containsValue(2) && cardsByType.size == 4) HandType.ONE_PAIR
+        if (cardGroupSizes.size == 1) HandType.FIVE_OF_A_KIND
+        else if (4 in cardGroupSizes) HandType.FOUR_OF_A_KIND
+        else if (3 in cardGroupSizes && 2 in cardGroupSizes) HandType.FULL_HOUSE
+        else if (3 in cardGroupSizes) HandType.THREE_OF_A_KIND
+        else if (2 in cardGroupSizes && cardGroupSizes.size == 3) HandType.TWO_PAIR
+        else if (2 in cardGroupSizes && cardGroupSizes.size == 4) HandType.ONE_PAIR
         else HandType.HIGH_CARD
 
     fun getHandType(): HandType {
         if (rules == Rules.WITHOUT_JOKER) return handType
-        val numJoker = cards.map { it.toString() == "J" }.count { it }
+        val numJoker = cards.filter { it.toString() == Order1.J.toString() }.size
         if (numJoker == 0) return handType
         return when (handType) {
             HandType.HIGH_CARD -> HandType.ONE_PAIR
