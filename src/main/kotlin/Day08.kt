@@ -1,3 +1,4 @@
+import util.lcm
 import util.loadAsList
 import kotlin.time.measureTime
 
@@ -17,23 +18,29 @@ class Day08(
     }
 
     fun part1(): Int {
-        var currentNode = network["AAA"]
-        val targetNode = network["ZZZ"]
+        return network["AAA"]?.countStepsUntil("ZZZ") ?: throw Exception("This should never happen")
+    }
+
+    private fun Node.countStepsUntil(target: String): Int {
+        var currentNode = this
         var nSteps = 0
-        var junction: Direction
-        while (currentNode != targetNode) {
-            junction = instructions[nSteps % instructions.size]
-            currentNode = when (junction) {
-                Direction.RIGHT -> network[currentNode?.right]
-                Direction.LEFT -> network[currentNode?.left]
-            }
+        var turn: Direction
+        while (!currentNode.name.endsWith(target)) {
+            turn = instructions[nSteps % instructions.size]
+            currentNode = when (turn) {
+                Direction.RIGHT -> network[currentNode.right]
+                Direction.LEFT -> network[currentNode.left]
+            } ?: throw Exception("This should never happen")
             nSteps++
         }
         return nSteps
     }
 
-    fun part2(): Int {
-        TODO("Not yet implemented")
+    fun part2(): Long {
+        return network
+            .filter { it.key.endsWith("A") }
+            .map { it.value.countStepsUntil("Z").toLong() }
+            .reduce { acc, i -> lcm(acc, i) }
     }
 }
 
