@@ -12,23 +12,12 @@ class Day09(input: List<String> = loadAsList(day = 9)) {
             lastValues.add(sequence.last())
             sequence = sequence.windowed(2).map { (a, b) -> b - a }
         }
-        return lastValues.reversed().reduce { acc, i -> acc + i }
-    }
-
-    private fun List<Long>.findPreviousInSequence(): Long {
-        val lastValues = mutableListOf<Long>()
-        var sequence = this
-        while (sequence.any { it != 0L }) {
-            lastValues.add(sequence.first())
-            sequence = sequence.windowed(2).map { (a, b) -> a - b }
-        }
-        return lastValues.reversed().reduce { acc, i -> acc + i }
+        return lastValues.sum()
     }
 
     fun part1(): Long = history.sumOf { it.findNextInSequence() }
 
-
-    fun part2(): Long = history.sumOf { it.findPreviousInSequence() }
+    fun part2(): Long = history.sumOf { it.reversed().findNextInSequence() }
 }
 
 fun main() {
