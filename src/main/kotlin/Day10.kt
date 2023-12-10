@@ -1,5 +1,6 @@
 import util.Cell2D
 import util.loadAsList
+import kotlin.math.abs
 import kotlin.time.measureTime
 
 class Day10(input: List<String> = loadAsList(day = 10)) {
@@ -9,18 +10,14 @@ class Day10(input: List<String> = loadAsList(day = 10)) {
 
     lateinit var start: Cell2D
 
+    private val last = Cell2D(input[0].length - 1, input.size - 1)
+
     private val pipes = buildMap<Cell2D, Pipe> {
         input.forEachIndexed { y, line ->
             line.forEachIndexed { x, char ->
-                when (char.toPipe()) {
-                    Pipe.START -> {
-                        start = Cell2D(x, y)
-                        put(start, Pipe.START)
-                    }
-
-                    Pipe.GROUND -> {}
-                    else -> put(Cell2D(x, y), char.toPipe())
-                }
+                val pipe = char.toPipe()
+                if (pipe == Pipe.START) start = Cell2D(x, y)
+                put(Cell2D(x, y), pipe)
             }
         }
     }
@@ -35,7 +32,7 @@ class Day10(input: List<String> = loadAsList(day = 10)) {
         } else if (pipes[start.east()] in listOf(Pipe.HORIZONTAL, Pipe.NORTH_WEST, Pipe.SOUTH_WEST)) {
             findLoop(Heading.EAST, start.east())
         } else {
-            emptyList()
+            emptyMap()
         }
 
 
@@ -44,7 +41,20 @@ class Day10(input: List<String> = loadAsList(day = 10)) {
     }
 
     fun part2(): Int {
-        TODO("Not yet implemented")
+        var crossing = 0
+        var counter = 0
+        for (y in 0..last.y) {
+            for (x in 0..last.x) {
+                val currentCell = Cell2D(x, y)
+                if (currentCell in loop && currentCell.south() in loop) {
+                    val diff = loop[currentCell]!! - loop[currentCell.south()]!! //safe, because of if-statement
+                    if (abs(diff) == 1) crossing += diff
+                } else if (currentCell !in loop && crossing != 0) {
+                    counter++
+                }
+            }
+        }
+        return counter
     }
 
     private fun Cell2D.getNext(heading: Heading): Pair<Cell2D, Heading>? = when (pipes[this]) {
@@ -97,12 +107,13 @@ class Day10(input: List<String> = loadAsList(day = 10)) {
     private fun findLoop(
         heading: Heading,
         position: Cell2D,
-    ): List<Cell2D> {
-        val path: MutableList<Cell2D> = mutableListOf(start)
+    ): Map<Cell2D, Int> {
+        var step = 0
+        val path: MutableMap<Cell2D, Int> = mutableMapOf(start to step++)
         var (nextPosition, nextHeading) = position to heading
         while (pipes[nextPosition] != Pipe.START) {
-            path.add(nextPosition)
-            val temp = nextPosition.getNext(nextHeading) ?: return emptyList()
+            path[nextPosition] = step++
+            val temp = nextPosition.getNext(nextHeading) ?: return emptyMap()
             nextPosition = temp.first
             nextHeading = temp.second
         }
