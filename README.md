@@ -48,3 +48,14 @@ an interface of enumerations comparable.
 Part 1 was straight forward, just follow the instructions. Part 2 could not be brute forced, so the key wa to remember,
 that each ghost follows its own loop and the *least common multiple* of each loop length represents time it takes
 until all loops sync up again.
+
+# Day 09: Mirage Maintenance
+
+Window-Function was key here.
+
+# Day 10: Pipe Maze
+
+First kind of maze problem, but the actual path was quite straight, since it was guaranteed
+to be a single loop without branches. Finding the enclosed areas was more tricky, since a simple flood-fill
+would not work, given the rules of the puzzle. So after another tip I implemented
+the [nonzero-rule](https://en.wikipedia.org/wiki/Nonzero-rule).
