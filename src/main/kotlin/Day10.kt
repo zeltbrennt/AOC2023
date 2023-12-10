@@ -10,7 +10,7 @@ class Day10(input: List<String> = loadAsList(day = 10)) {
 
     lateinit var start: Cell2D
 
-    private val last = Cell2D(input[0].length - 1, input.size - 1)
+    private val last = Cell2D(input[0].lastIndex, input.lastIndex)
 
     private val pipes = buildMap<Cell2D, Pipe> {
         input.forEachIndexed { y, line ->
@@ -49,12 +49,28 @@ class Day10(input: List<String> = loadAsList(day = 10)) {
                 if (currentCell in loop && currentCell.south() in loop) {
                     val diff = loop[currentCell]!! - loop[currentCell.south()]!! //safe, because of if-statement
                     if (abs(diff) == 1) crossing += diff
+                    //print("\u001B[34m" + pipes[currentCell]?.toASCII() + "\u001B[0m")
                 } else if (currentCell !in loop && crossing != 0) {
                     counter++
+                    //print("\u001B[32m" + "I" + "\u001B[0m") //green
+                } else {
+                    //print("\u001B[0m" + pipes[currentCell]?.toASCII() + "\u001B[0m")
                 }
             }
+            //println()
         }
         return counter
+    }
+
+    private fun Pipe.toASCII() = when (this) {
+        Pipe.VERTICAL -> 0x02551.toChar()
+        Pipe.HORIZONTAL -> 0x2550.toChar()
+        Pipe.NORTH_WEST -> 0x255D.toChar()
+        Pipe.NORTH_EAST -> 0x0255A.toChar()
+        Pipe.SOUTH_WEST -> 0x02557.toChar()
+        Pipe.SOUTH_EAST -> 0x02554.toChar()
+        Pipe.START -> 'S'
+        Pipe.GROUND -> ' '
     }
 
     private fun Cell2D.getNext(heading: Heading): Pair<Cell2D, Heading>? = when (pipes[this]) {
