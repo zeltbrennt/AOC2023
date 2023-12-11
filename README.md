@@ -59,3 +59,8 @@ First kind of maze problem, but the actual path was quite straight, since it was
 to be a single loop without branches. Finding the enclosed areas was more tricky, since a simple flood-fill
 would not work, given the rules of the puzzle. So after another tip I implemented
 the [nonzero-rule](https://en.wikipedia.org/wiki/Nonzero-rule).
+
+# Day 11: Cosmic Expansion
+
+It was quite clear, that I only wanted to model the Galaxies, not the space between. Then It was a matter of
+updating the coordinates based on the expansion multiplier.
