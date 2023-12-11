@@ -23,14 +23,14 @@ class Day10(input: List<String> = loadAsList(day = 10)) {
     }
 
     private val loop =
-        if (pipes[start.south()] in listOf(Pipe.VERTICAL, Pipe.NORTH_EAST, Pipe.NORTH_WEST)) {
-            findLoop(Heading.SOUTH, start.south())
-        } else if (pipes[start.west()] in listOf(Pipe.HORIZONTAL, Pipe.SOUTH_EAST, Pipe.NORTH_EAST)) {
-            findLoop(Heading.WEST, start.west())
-        } else if (pipes[start.north()] in listOf(Pipe.VERTICAL, Pipe.SOUTH_EAST, Pipe.SOUTH_WEST)) {
-            findLoop(Heading.SOUTH, start.south())
-        } else if (pipes[start.east()] in listOf(Pipe.HORIZONTAL, Pipe.NORTH_WEST, Pipe.SOUTH_WEST)) {
-            findLoop(Heading.EAST, start.east())
+        if (pipes[start.south] in listOf(Pipe.VERTICAL, Pipe.NORTH_EAST, Pipe.NORTH_WEST)) {
+            findLoop(Heading.SOUTH, start.south)
+        } else if (pipes[start.west] in listOf(Pipe.HORIZONTAL, Pipe.SOUTH_EAST, Pipe.NORTH_EAST)) {
+            findLoop(Heading.WEST, start.west)
+        } else if (pipes[start.north] in listOf(Pipe.VERTICAL, Pipe.SOUTH_EAST, Pipe.SOUTH_WEST)) {
+            findLoop(Heading.SOUTH, start.south)
+        } else if (pipes[start.east] in listOf(Pipe.HORIZONTAL, Pipe.NORTH_WEST, Pipe.SOUTH_WEST)) {
+            findLoop(Heading.EAST, start.east)
         } else {
             emptyMap()
         }
@@ -46,8 +46,8 @@ class Day10(input: List<String> = loadAsList(day = 10)) {
         for (y in 0..last.y) {
             for (x in 0..last.x) {
                 val currentCell = Cell2D(x, y)
-                if (currentCell in loop && currentCell.south() in loop) {
-                    val diff = loop[currentCell]!! - loop[currentCell.south()]!! //safe, because of if-statement
+                if (currentCell in loop && currentCell.south in loop) {
+                    val diff = loop[currentCell]!! - loop[currentCell.south]!! //safe, because of if-statement
                     if (abs(diff) == 1) crossing += diff
                     //print("\u001B[34m" + pipes[currentCell]?.toASCII() + "\u001B[0m")
                 } else if (currentCell !in loop && crossing != 0) {
@@ -75,46 +75,46 @@ class Day10(input: List<String> = loadAsList(day = 10)) {
 
     private fun Cell2D.getNext(heading: Heading): Pair<Cell2D, Heading>? = when (pipes[this]) {
         Pipe.VERTICAL -> when (heading) {
-            Heading.NORTH -> this.north() to heading
-            Heading.SOUTH -> this.south() to heading
+            Heading.NORTH -> this.north to heading
+            Heading.SOUTH -> this.south to heading
             else -> null
         }
 
         Pipe.HORIZONTAL -> when (heading) {
-            Heading.WEST -> this.west() to heading
-            Heading.EAST -> this.east() to heading
+            Heading.WEST -> this.west to heading
+            Heading.EAST -> this.east to heading
             else -> null
         }
 
         Pipe.NORTH_WEST -> when (heading) {
-            Heading.EAST -> this.north() to Heading.NORTH
-            Heading.SOUTH -> this.west() to Heading.WEST
+            Heading.EAST -> this.north to Heading.NORTH
+            Heading.SOUTH -> this.west to Heading.WEST
             else -> null
         }
 
         Pipe.NORTH_EAST -> when (heading) {
-            Heading.WEST -> this.north() to Heading.NORTH
-            Heading.SOUTH -> this.east() to Heading.EAST
+            Heading.WEST -> this.north to Heading.NORTH
+            Heading.SOUTH -> this.east to Heading.EAST
             else -> null
         }
 
         Pipe.SOUTH_WEST -> when (heading) {
-            Heading.EAST -> this.south() to Heading.SOUTH
-            Heading.NORTH -> this.west() to Heading.WEST
+            Heading.EAST -> this.south to Heading.SOUTH
+            Heading.NORTH -> this.west to Heading.WEST
             else -> null
         }
 
         Pipe.SOUTH_EAST -> when (heading) {
-            Heading.WEST -> this.south() to Heading.SOUTH
-            Heading.NORTH -> this.east() to Heading.EAST
+            Heading.WEST -> this.south to Heading.SOUTH
+            Heading.NORTH -> this.east to Heading.EAST
             else -> null
         }
 
         Pipe.START -> when (heading) {
-            Heading.WEST -> this.west() to heading
-            Heading.NORTH -> this.north() to heading
-            Heading.SOUTH -> this.south() to heading
-            Heading.EAST -> this.east() to heading
+            Heading.WEST -> this.west to heading
+            Heading.NORTH -> this.north to heading
+            Heading.SOUTH -> this.south to heading
+            Heading.EAST -> this.east to heading
         }
 
         else -> null

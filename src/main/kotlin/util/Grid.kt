@@ -8,14 +8,14 @@ import kotlin.math.sqrt
 interface Cell
 data class Cell2D(val x: Int, val y: Int) : Cell {
 
-    fun north() = Cell2D(x, y - 1)
-    fun south() = Cell2D(x, y + 1)
-    fun west() = Cell2D(x - 1, y)
-    fun east() = Cell2D(x + 1, y)
+    val north: Cell2D get() = Cell2D(x, y - 1)
+    val south: Cell2D get() = Cell2D(x, y + 1)
+    val west: Cell2D get() = Cell2D(x - 1, y)
+    val east: Cell2D get() = Cell2D(x + 1, y)
 
     fun get8Neighbors(): List<Cell2D> {
         return listOf(
-            north(), south(), east(), west(),
+            north, south, east, west,
             Cell2D(x + 1, y + 1),
             Cell2D(x + 1, y - 1),
             Cell2D(x - 1, y + 1),
@@ -25,7 +25,7 @@ data class Cell2D(val x: Int, val y: Int) : Cell {
 
     fun get4Neighbors(): List<Cell2D> {
         return listOf(
-            north(), south(), east(), west()
+            north, south, east, west
         )
     }
 
