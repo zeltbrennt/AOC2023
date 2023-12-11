@@ -15,10 +15,19 @@ class Day11Test {
     }
 
     @Test
-    @DisplayName("Part 2")
+    @DisplayName("Part 2 with expand 10")
     fun day11_part02_example01() {
-        val solution = solver.part2()
-        assertEquals(0, solution)
+        val expanded = solver.expand(solver.galaxies, 10)
+        val solution = solver.getSumOfDistances(expanded)
+        assertEquals(1030, solution)
+    }
+
+    @Test
+    @DisplayName("Part 2 with expand 100")
+    fun day11_part02_example02() {
+        val expanded = solver.expand(solver.galaxies, 100)
+        val solution = solver.getSumOfDistances(expanded)
+        assertEquals(8410, solution)
     }
 
 } 
