@@ -4,7 +4,7 @@ import kotlin.time.measureTime
 
 class Day11(input: List<String> = loadAsList(day = 11)) {
 
-    val galaxies = buildList<Cell2D> {
+    val galaxies = buildList {
         for ((y, row) in input.withIndex()) {
             for (x in row.indices) {
                 if (input[y][x] == '#') {
@@ -27,12 +27,12 @@ class Day11(input: List<String> = loadAsList(day = 11)) {
             this.addAll(universe)
             toExpandX.forEach { col ->
                 this.forEachIndexed { index, galaxy ->
-                    if (galaxy.x > col) this[index] = galaxy.copy(galaxy.x + faktor - 1, galaxy.y)
+                    if (galaxy.x > col) this[index] = galaxy.copy(x = galaxy.x + faktor - 1, y = galaxy.y)
                 }
             }
             toExpandY.forEach { row ->
                 this.forEachIndexed { index, galaxy ->
-                    if (galaxy.y > row) this[index] = galaxy.copy(galaxy.x, galaxy.y + faktor - 1)
+                    if (galaxy.y > row) this[index] = galaxy.copy(x = galaxy.x, y = galaxy.y + faktor - 1)
                 }
             }
         }
@@ -42,7 +42,7 @@ class Day11(input: List<String> = loadAsList(day = 11)) {
     fun getSumOfDistances(universe: List<Cell2D>): Long {
         var sumOfDistances = 0L
         for (i in universe.indices) {
-            for (j in i..universe.lastIndex) {
+            for (j in (i + 1)..universe.lastIndex) {
                 sumOfDistances += universe[i].manhattanDistance(universe[j])
             }
         }
