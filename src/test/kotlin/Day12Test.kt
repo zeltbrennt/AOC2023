@@ -1,4 +1,5 @@
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
@@ -25,6 +26,13 @@ class Day12Test {
     @DisplayName("???.### 1,1,3 is 1 Arrangement")
     fun day12_part01_test_parsing_01() {
         val solution = solver.getNumberOfArrangements("???.### 1,1,3")
+        assertEquals(1, solution)
+    }
+
+    @Test
+    @DisplayName("minimal example")
+    fun day12_mini_example() {
+        val solution = solver.getNumberOfArrangements("....# 1")
         assertEquals(1, solution)
     }
 
@@ -84,6 +92,7 @@ class Day12Test {
         assertEquals(1, solution)
     }
 
+
     @Test
     @DisplayName(".??..??...?##. 1,1,3 unfolded will become 16384 Arrangements")
     fun day12_part02_test_parsing_04() {
@@ -117,6 +126,13 @@ class Day12Test {
     fun day12_part02_test_parsing_08() {
         val solution = solver.getNumberOfArrangements(solver.unfold("?###???????? 3,2,1"))
         assertEquals(506250, solution)
+    }
+
+    @Test
+    @DisplayName("just check if first line of input even finishes")
+    fun day12_sanity_check() {
+        val solution = solver.getNumberOfArrangements(solver.unfold("#???#?#?.?##?#?.#. 7,5,1"))
+        assertNotNull(solution)
     }
 } 
         
