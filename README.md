@@ -64,3 +64,11 @@ the [nonzero-rule](https://en.wikipedia.org/wiki/Nonzero-rule).
 
 It was quite clear, that I only wanted to model the Galaxies, not the space between. Then It was a matter of
 updating the coordinates based on the expansion multiplier.
+
+## Day 12: Hot Springs
+
+Part 1 was a nice brute-force approach that fell flat for part 2. So I tried dynamic programming again and probably made
+it more complicated than it needs to be. I experimented with just keeping track of the size of the current group
+instead of a list of all groups, that would simplify the shenanigans I needed to do in the recursion part.
+But the runtime was always too slow, until I finally just slapped some memoization on and reduced the time from
+a REDACTED to under a second :)
