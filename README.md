@@ -72,3 +72,9 @@ it more complicated than it needs to be. I experimented with just keeping track 
 instead of a list of all groups, that would simplify the shenanigans I needed to do in the recursion part.
 But the runtime was always too slow, until I finally just slapped some memoization on and reduced the time from
 a REDACTED to under a second :)
+
+# Day 13: Point of Incidence
+
+This time, brute force did work, for finding the correct axis as well as permuting all possible smudge locations
+for part 2 and finding all the possible reflection axis. The tricky part was to remember, that after cleaning the mirror
+more than one axis could be viable.
