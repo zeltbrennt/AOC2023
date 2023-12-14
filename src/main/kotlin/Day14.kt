@@ -135,8 +135,8 @@ class Day14(input: List<String> = loadAsList(day = 14)) {
     fun part2(): Int {
         val veryLongTime = 1000000000
         val previousStates = mutableListOf<String>()
-        var cycleLength: Int
-        var iteration = 0L
+        var cycleLength = 0
+        var iteration = 0
 
         while (iteration < veryLongTime) {
             platform.tiltNorth()
@@ -144,7 +144,7 @@ class Day14(input: List<String> = loadAsList(day = 14)) {
             platform.tiltSouth()
             platform.tiltEast()
             iteration++
-            val state = platform.toString()
+            val state = platform.roundRocks.toString()
             val cycleBegin = previousStates.indexOf(state)
             if (cycleBegin != -1) {
                 cycleLength = previousStates.size - cycleBegin
@@ -152,7 +152,6 @@ class Day14(input: List<String> = loadAsList(day = 14)) {
             }
             previousStates.add(state)
         }
-        platform.roundRocks.groupBy { it.y }.count()
         return platform.roundRocks.groupingBy { it.y }
             .eachCount()
             .map { (platform.height - it.key) * it.value }
