@@ -133,30 +133,24 @@ class Day14(input: List<String> = loadAsList(day = 14)) {
     }
 
     fun part2(): Int {
-        val veryLongTime = 10000
+        val veryLongTime = 1000000000
         val previousStates = mutableListOf<String>()
-        var cycleBegin = 0
+        var cycleLength: Int
         var iteration = 0L
-        /*
+
         while (iteration < veryLongTime) {
             platform.tiltNorth()
             platform.tiltWest()
             platform.tiltSouth()
             platform.tiltEast()
             iteration++
-            cycleBegin = previousStates.indexOf(platform.toString())
+            val state = platform.toString()
+            val cycleBegin = previousStates.indexOf(state)
             if (cycleBegin != -1) {
-                break
+                cycleLength = previousStates.size - cycleBegin
+                iteration = veryLongTime - (veryLongTime - iteration) % cycleLength
             }
-        }
-        iteration = (veryLongTime - iteration) % (iteration - cycleBegin)
-        */
-        while (iteration < veryLongTime) {
-            platform.tiltNorth()
-            platform.tiltWest()
-            platform.tiltSouth()
-            platform.tiltEast()
-            iteration++
+            previousStates.add(state)
         }
         platform.roundRocks.groupBy { it.y }.count()
         return platform.roundRocks.groupingBy { it.y }
