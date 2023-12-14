@@ -78,3 +78,14 @@ a REDACTED to under a second :)
 This time, brute force did work, for finding the correct axis as well as permuting all possible smudge locations
 for part 2 and finding all the possible reflection axis. The tricky part was to remember, that after cleaning the mirror
 more than one axis could be viable.
+
+# Day 14: Parabolic Reflector Dish
+
+I think I found an okay way to simulate the result of the rolling rocks. I'm not sure, if an iterative approach would be
+faster
+than searching through the set of rocks first. Part 2 was easy this time, because I remembered my nemesis from last year
+[2022 Day 17: Pyroclastic Flow](https://adventofcode.com/2022/day/17) where I couldn't figure out, how to detect the
+repeating
+pattern. Now, I avenged my past self! I could speed up the process, if I would check after each tilt, if there is an
+repeating
+pattern. 
