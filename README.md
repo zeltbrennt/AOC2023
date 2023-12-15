@@ -85,7 +85,11 @@ I think I found an okay way to simulate the result of the rolling rocks. I'm not
 faster
 than searching through the set of rocks first. Part 2 was easy this time, because I remembered my nemesis from last year
 [2022 Day 17: Pyroclastic Flow](https://adventofcode.com/2022/day/17) where I couldn't figure out, how to detect the
-repeating
-pattern. Now, I avenged my past self! I could speed up the process, if I would check after each tilt, if there is an
-repeating
-pattern. 
+repeating pattern. Now, I avenged my past self! I could speed up the process, if I would check after each tilt, if there
+is an
+repeating pattern.
+
+# Day 15: Lens Library
+
+Implementing the Hash-Function was easy, and then instantly recognized what data structure we would build. Just using a
+HashMap from the standard library would have also worked, but I wanted to implement it myself. 
