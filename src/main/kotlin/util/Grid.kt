@@ -5,36 +5,35 @@ import kotlin.math.atan
 import kotlin.math.pow
 import kotlin.math.sqrt
 
-interface Cell
-data class Cell2D(val x: Int, val y: Int) : Cell {
+data class Point(val x: Int, val y: Int, val z: Int = 0) {
 
-    val north: Cell2D get() = Cell2D(x, y - 1)
-    val south: Cell2D get() = Cell2D(x, y + 1)
-    val west: Cell2D get() = Cell2D(x - 1, y)
-    val east: Cell2D get() = Cell2D(x + 1, y)
+    val north: Point get() = this.copy(y = y - 1)
+    val south: Point get() = this.copy(y = y + 1)
+    val west: Point get() = this.copy(x = x - 1)
+    val east: Point get() = this.copy(x = x + 1)
+    val up: Point get() = this.copy(z = z + 1)
+    val down: Point get() = this.copy(z = z - 1)
 
-    fun get8Neighbors(): List<Cell2D> {
+    fun get8Neighbors(): List<Point> {
         return listOf(
             north, south, east, west,
-            Cell2D(x + 1, y + 1),
-            Cell2D(x + 1, y - 1),
-            Cell2D(x - 1, y + 1),
-            Cell2D(x - 1, y - 1)
+            north.east, north.west,
+            south.east, south.west
         )
     }
 
-    fun get4Neighbors(): List<Cell2D> {
+    fun get4Neighbors(): List<Point> {
         return listOf(
             north, south, east, west
         )
     }
 
-    fun manhattanDistance(cell: Cell2D) = abs(x - cell.x) + abs(y - cell.y)
+    fun manhattanDistance(point: Point) = abs(x - point.x) + abs(y - point.y)
 }
 
-class Grid<T>(private val content: Map<Cell, T>) {
+class Grid<T>(private val content: Map<Point, T>) {
 
-    fun getValueAt(cell: Cell) = content[cell]
+    fun getValueAt(point: Point) = content[point]
 }
 
 data class Vec2D(val x: Double, val y: Double) {
