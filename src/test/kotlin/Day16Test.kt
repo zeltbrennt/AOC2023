@@ -18,7 +18,7 @@ class Day16Test {
     @DisplayName("Part 2")
     fun day16_part02_example01() {
         val solution = solver.part2()
-        assertEquals(0, solution)
+        assertEquals(51, solution)
     }
 
 } 

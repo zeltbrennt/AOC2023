@@ -1,5 +1,6 @@
 import util.loadAsList
 import java.util.*
+import kotlin.math.max
 import kotlin.time.measureTime
 
 class Day16(private val input: List<String> = loadAsList(day = 16)) {
@@ -11,7 +12,7 @@ class Day16(private val input: List<String> = loadAsList(day = 16)) {
 
     data class Tile(val type: TileType, var energy: Int = 0)
 
-    fun getNext(pos: Point, direction: Direction): List<Pair<Point, Direction>> {
+    private fun getNext(pos: Point, direction: Direction): List<Pair<Point, Direction>> {
         val type = tiles[pos]?.type ?: return emptyList()
         return when (direction) {
             Direction.UP -> when (type) {
@@ -57,17 +58,17 @@ class Day16(private val input: List<String> = loadAsList(day = 16)) {
     }
 
 
-    private fun bounceBeam() {
+    private fun bounceBeam(start: Point, heading: Direction) {
         val queue: Deque<Pair<Point, Direction>> = LinkedList()
         val visited: MutableSet<Pair<Point, Direction>> = mutableSetOf()
-        queue.add(Point(0, 0) to Direction.RIGHT)
+        queue.add(start to heading)
         while (queue.isNotEmpty()) {
             val current = queue.removeFirst()
             val tile = tiles[current.first] ?: continue
             if (visited.add(current.first to current.second)) {
                 tile.energy++
                 queue.addAll(getNext(current.first, current.second))
-                //printTiles()
+                printTiles()
             }
         }
     }
@@ -87,23 +88,48 @@ class Day16(private val input: List<String> = loadAsList(day = 16)) {
         }
     }
 
-    fun printTiles() {
+    private fun printTiles() {
         println()
         for (i in input.indices) {
             for (j in input.first().indices) {
-                print(if ((tiles[Point(j, i)]?.energy ?: 0) > 0) "#" else ".")
+                print(
+                    when (tiles[Point(j, i)]?.energy) {
+                        1 -> Char(0x00b7)
+                        2 -> '+'
+                        else -> ' '
+                    }
+                )
             }
             println()
         }
     }
 
     fun part1(): Int {
-        bounceBeam()
+        bounceBeam(Point(0, 0), Direction.RIGHT)
         return tiles.filter { it.value.energy > 0 }.count()
     }
 
+    private fun resetTiles() = tiles.onEach { it.value.energy = 0 }
+
     fun part2(): Int {
-        TODO("Not yet implemented")
+        var maxEnergy = 0
+        for (x in input.first().indices) {
+            for (direction in listOf(Direction.UP, Direction.DOWN)) {
+                resetTiles()
+                val y = if (direction == Direction.UP) input.lastIndex else 0
+                bounceBeam(Point(x, 0), direction)
+                maxEnergy = max(maxEnergy, tiles.count { it.value.energy > 0 })
+            }
+        }
+        for (y in input.indices) {
+            for (direction in listOf(Direction.LEFT, Direction.RIGHT)) {
+                resetTiles()
+                val x = if (direction == Direction.LEFT) input.first().lastIndex else 0
+                bounceBeam(Point(x, y), direction)
+                maxEnergy = max(maxEnergy, tiles.count { it.value.energy > 0 })
+            }
+        }
+        return maxEnergy
     }
 }
 
