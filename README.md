@@ -92,4 +92,9 @@ repeating pattern.
 # Day 15: Lens Library
 
 Implementing the Hash-Function was easy, and then instantly recognized what data structure we would build. Just using a
-HashMap from the standard library would have also worked, but I wanted to implement it myself. 
+HashMap from the standard library would have also worked, but I wanted to implement it myself.
+
+# Day 16: The Floor Will Be Lava
+
+Once again being very verbose while modeling the problem. Getting the path of the beam was a simple BFS-Algorithm and
+then just brute-forcing part 2. 
