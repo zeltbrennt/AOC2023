@@ -97,4 +97,12 @@ HashMap from the standard library would have also worked, but I wanted to implem
 # Day 16: The Floor Will Be Lava
 
 Once again being very verbose while modeling the problem. Getting the path of the beam was a simple BFS-Algorithm and
-then just brute-forcing part 2. 
+then just brute-forcing part 2.
+
+# Day 17: Clumsy Crucible
+
+Path finding again, first I was pleased, I thought Dijkstra would manage, but the state being a little more
+complicated was an issue here. I came pretty close a few times, but in the end, I needed to look at some other solutions
+to figure out, what state to save where. Kind of annoying having two starting points, since I saved the current
+direction
+in the state. Having access to a priority queue helped a lot, so the algo could finish early.

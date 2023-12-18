@@ -46,13 +46,15 @@ class Day17(private val input: List<String> = loadAsList(day = 17)) {
         }
     }
 
-    private fun State.getNextStates(): List<State> {
+    private fun State.getNextStates(part: Int): List<State> {
         val next = mutableListOf<State>()
-        if (node.steps < 2) {
+        if (node.steps < if (part == 1) 3 else 10) {
             addWhenLegal(node.direction, next)
         }
-        addWhenLegal(node.direction.left(), next)
-        addWhenLegal(node.direction.right(), next)
+        if (node.steps > if (part == 1) 0 else 3) {
+            addWhenLegal(node.direction.left(), next)
+            addWhenLegal(node.direction.right(), next)
+        }
         return next
     }
 
@@ -67,22 +69,22 @@ class Day17(private val input: List<String> = loadAsList(day = 17)) {
         val newNode = Node(
             position = newPosition,
             direction = direction,
-            steps = if (this.node.direction == direction) this.node.steps + 1 else 0
+            steps = if (this.node.direction == direction) this.node.steps + 1 else 1
         )
         val newState = State(
             node = newNode,
-            cost = this.cost + crucible[this.node.position],
+            cost = this.cost + crucible[newPosition],
             last = this
         )
         next.add(newState)
 
     }
 
-    private fun shortestPath(): Int {
+    private fun shortestPath(part: Int = 1): Int {
         val visited: MutableSet<Node> = mutableSetOf()
         val queue: PriorityQueue<State> = PriorityQueue()
-        queue.add(State(Node(Point(0, 1), Direction.SOUTH, 1), crucible[Point(0, 1)], null))
-        queue.add(State(Node(Point(1, 0), Direction.EAST, 1), crucible[Point(1, 0)], null))
+        queue.add(State(Node(Point(0, 0), Direction.SOUTH, 0), 0, null))
+        queue.add(State(Node(Point(0, 0), Direction.EAST, 0), 0, null))
         while (queue.isNotEmpty()) {
             val current = queue.remove()
             if (current.node in visited) continue
@@ -91,11 +93,10 @@ class Day17(private val input: List<String> = loadAsList(day = 17)) {
                 return current.cost
             }
             visited.add(current.node)
-            for (next in current.getNextStates()) {
+            for (next in current.getNextStates(part)) {
                 queue.add(next)
             }
         }
-
         return -1
     }
 
@@ -107,22 +108,22 @@ class Day17(private val input: List<String> = loadAsList(day = 17)) {
             path.add(temp)
             temp = temp.last ?: break
         }
-        //path.reversed().forEach { println("$it ${it.cost}") }
+        //path.reversed().forEach { println("${it.node} ${it.cost}") }
         for (i in input.indices) {
             for (j in input.first().indices) {
                 if (Point(j, i) !in path.map { it.node.position }) print(input[i][j])
-                else print('#')
+                else print('.')
             }
             println()
         }
     }
 
     fun part1(): Int {
-        return shortestPath() //684 too high
+        return shortestPath()
     }
 
     fun part2(): Int {
-        TODO("Not yet implemented")
+        return shortestPath(2)
     }
 }
 
