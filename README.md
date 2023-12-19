@@ -108,10 +108,16 @@ to figure out, what state to save where. Kind of annoying having two starting po
 direction
 in the state. Having access to a priority queue helped a lot, so the algo could finish early.
 
-# Day 18 Lavaduct Lagoon
+# Day 18: Lavaduct Lagoon
 
 Part 1 is easy with [BFS-FloodFill](https://en.wikipedia.org/wiki/Flood_fill), for part 2 I reimplemented the solution
 to use [shoelace](https://en.wikipedia.org/wiki/Shoelace_formula) algorithm
 with [picks theorem](https://en.wikipedia.org/wiki/Pick%27s_theorem)
 to calculate the area or number of coordinates in area. Separating the input parsing and the calculation of the solution
 is probably not necessary, but that's the style I've been doing all this time.
+
+# Day 19: Aplenty
+
+Solved Part 1 in the most stupid way I could think of, somehow creating actual functions from the input
+and storing them in a map, to actually call them. Learned a lot about funktional programming this way
+and the code ist fast! Still working on part 2, though...
