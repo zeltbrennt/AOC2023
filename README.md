@@ -101,7 +101,8 @@ then just brute-forcing part 2.
 
 # Day 17: Clumsy Crucible
 
-Path finding again, first I was pleased, I thought Dijkstra would manage, but the state being a little more
+Path finding again, first I was pleased, I thought [Dijkstra](https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm)
+would manage, but the state being a little more
 complicated was an issue here. I came pretty close a few times, but in the end, I needed to look at some other solutions
 to figure out, what state to save where. Kind of annoying having two starting points, since I saved the current
 direction
@@ -109,4 +110,8 @@ in the state. Having access to a priority queue helped a lot, so the algo could 
 
 # Day 18 Lavaduct Lagoon
 
-Part 1 is easy with BFS-FloodFill, for Part 2 needs still time...
+Part 1 is easy with [BFS-FloodFill](https://en.wikipedia.org/wiki/Flood_fill), for part 2 I reimplemented the solution
+to use [shoelace](https://en.wikipedia.org/wiki/Shoelace_formula) algorithm
+with [picks theorem](https://en.wikipedia.org/wiki/Pick%27s_theorem)
+to calculate the area or number of coordinates in area. Separating the input parsing and the calculation of the solution
+is probably not necessary, but that's the style I've been doing all this time.
