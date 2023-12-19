@@ -106,3 +106,7 @@ complicated was an issue here. I came pretty close a few times, but in the end, 
 to figure out, what state to save where. Kind of annoying having two starting points, since I saved the current
 direction
 in the state. Having access to a priority queue helped a lot, so the algo could finish early.
+
+# Day 18 Lavaduct Lagoon
+
+Part 1 is easy with BFS-FloodFill, for Part 2 needs still time...
