@@ -13,7 +13,7 @@ class Day19(private val input: List<String> = loadAsList(day = 19)) {
     }
 
     private val presents = buildList {
-        val regex = """\{[xmas]=(\d+),[xmas]=(\d+),[xmas]=(\d+),[xmas]=(\d+)\}""".toRegex()
+        val regex = """\{x=(\d+),m=(\d+),a=(\d+),s=(\d+)\}""".toRegex()
         input.forEach {
             val match = regex.matchEntire(it)
             if (match != null) {
@@ -52,9 +52,11 @@ class Day19(private val input: List<String> = loadAsList(day = 19)) {
         return presents.filter { functions["in"]?.invoke(it) == true }.flatMap { it.values }.sum()
     }
 
-    fun part2(): Int {
-        """([xmas])([<>])(\d+):(\D+)""".toRegex()
-        TODO("Not yet implemented")
+    fun part2(): Long {
+        /*Idee:
+            something something k-d-tree??
+        * */
+
     }
 }
 
