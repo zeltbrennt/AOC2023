@@ -11,6 +11,7 @@ class Day20(input: List<String> = loadAsList(day = 20)) {
 
         private val buffer = mutableListOf<Pulse>()
 
+
         fun receive(pulse: Pulse) {
             //println("${pulse.sender} -> ${pulse.value} -> $name")
             buffer.add(pulse)
@@ -29,11 +30,14 @@ class Day20(input: List<String> = loadAsList(day = 20)) {
         }
 
         abstract fun handle(pulse: Pulse)
+        abstract fun reset()
 
         companion object {
             val modules = mutableMapOf<String, Module>()
             var high = 0L
             var low = 0L
+            val relevant: MutableMap<String, Long> = mutableMapOf()
+            var counter = 0L
         }
     }
 
@@ -53,6 +57,10 @@ class Day20(input: List<String> = loadAsList(day = 20)) {
             on = !on
         }
 
+        override fun reset() {
+            on = false
+        }
+
         override fun toString(): String {
             return "$name=${if (on) "on" else "off"}"
         }
@@ -69,6 +77,10 @@ class Day20(input: List<String> = loadAsList(day = 20)) {
             }
         }
 
+        override fun reset() {
+
+        }
+
         override fun toString(): String {
             return "$name=$outputs"
         }
@@ -80,6 +92,7 @@ class Day20(input: List<String> = loadAsList(day = 20)) {
         }
 
         private val inputs = mutableMapOf<String, Value>()
+        private var hasReported = false
 
         fun addInput(name: String) {
             inputs[name] = Value.LOW
@@ -91,6 +104,17 @@ class Day20(input: List<String> = loadAsList(day = 20)) {
                 outputs.forEach { modules[it]?.receive(Pulse(name, Value.HIGH)) }
             } else {
                 outputs.forEach { modules[it]?.receive(Pulse(name, Value.LOW)) }
+            }
+            if (inputs.all { it.value == Value.LOW } && name in relevant && !hasReported) {
+                //println("$name: $counter")
+                relevant[name] = counter
+                hasReported = true
+            }
+        }
+
+        override fun reset() {
+            inputs.forEach {
+                inputs[it.key] = Value.LOW
             }
         }
 
@@ -105,14 +129,10 @@ class Day20(input: List<String> = loadAsList(day = 20)) {
             modules[name] = this
         }
 
-        private var isDone = false
-
-        fun hasNotReceivedLow(): Boolean {
-            return !isDone
+        override fun handle(pulse: Pulse) {
         }
 
-        override fun handle(pulse: Pulse) {
-            if (pulse.value == Value.LOW) isDone = true
+        override fun reset() {
         }
 
     }
@@ -144,6 +164,10 @@ class Day20(input: List<String> = loadAsList(day = 20)) {
                 }
             }
         }
+        val (x) = Module.modules.values.filter { "rx" in it.outputs }.map { it.name }
+        Module.modules.values.filter { x in it.outputs }.map { it.name }
+            .forEach { Module.relevant[it] = 0 }
+
     }
 
     private fun pushButton() {
@@ -162,13 +186,14 @@ class Day20(input: List<String> = loadAsList(day = 20)) {
         return Module.high * Module.low
     }
 
+    //4330938921000 low
     fun part2(): Long {
-        var counter = 0L
-        while ((Module.modules["rx"] as Output).hasNotReceivedLow()) {
+        Module.modules.values.forEach(Module::reset)
+        while (Module.relevant.any { it.value == 0L }) {
+            Module.counter++
             pushButton()
-            counter++
         }
-        return counter
+        return Module.relevant.values.reduce { acc, l -> util.lcm(acc, l) }
     }
 }
 

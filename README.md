@@ -125,8 +125,6 @@ and the code ist fast! Still working on part 2, though...
 # Day 20: Pulse Propagation
 
 Solved Part 1 naively, actually simulating the pulses between the modules. Learned a lot about the use of interfaces vs
-abstract classes. For part 2, this is not enough. I am very sure that that one has to decipher the input, which is some
-form
-of assembly. Flip-Flops being NOT-Gates and Conjunctions being AND... In the end, the input will translate into a
-mathematical
-operation. I will figure this out later.
+abstract classes. For part 2, this is not enough. You actually need to look at the input and realize that these are
+binary counters. Each conjunction at the output represents a binary number, with the input Flip-Flops as bits. Counting
+number of button presses it takes, to make the value overflow is the solution. Just LCM the numbers together.
