@@ -1,5 +1,6 @@
 package util
 
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.atan
 import kotlin.math.pow
@@ -28,7 +29,18 @@ data class Point(val x: Int, val y: Int, val z: Int = 0) {
         )
     }
 
-    fun manhattanDistance(point: Point) = abs(x - point.x) + abs(y - point.y)
+    fun manhattanDistance(point: Point) = abs(x - point.x) + abs(y - point.y) + abs(z - point.z)
+
+    fun pointsOnLine(other: Point): List<Point> = buildList {
+        for (i in 0..this@Point.manhattanDistance(other)) {
+            when {
+                x != other.x -> add(this@Point.copy(x = i + x))
+                y != other.y -> add(this@Point.copy(y = i + y))
+                z != other.z -> add(this@Point.copy(z = i + z))
+
+            }
+        }
+    }
 }
 
 class Grid<T>(private val content: Map<Point, T>) {
@@ -46,4 +58,23 @@ data class Vec2D(val x: Double, val y: Double) {
 
     fun scale(s: Int) = Vec2D(x * s, y * s)
     fun normalize() = Vec2D(x / magnitude, y / magnitude)
+}
+
+
+private fun floodFill(start: Point): Set<Point> {
+    val queue: Deque<Point> = LinkedList()
+    queue.add(start)
+    val visited = mutableSetOf(start)
+    visited.add(start)
+    while (queue.isNotEmpty()) {
+        val current = queue.removeFirst()
+        current.get4Neighbors().forEach {
+            if (it !in visited) {
+                queue.add(it)
+                visited.add(it)
+                //printShape(visited)
+            }
+        }
+    }
+    return visited
 }
