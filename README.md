@@ -128,3 +128,12 @@ Solved Part 1 naively, actually simulating the pulses between the modules. Learn
 abstract classes. For part 2, this is not enough. You actually need to look at the input and realize that these are
 binary counters. Each conjunction at the output represents a binary number, with the input Flip-Flops as bits. Counting
 number of button presses it takes, to make the value overflow is the solution. Just LCM the numbers together.
+
+# Day 21: Step Counter
+
+Part 1 could *almost* be solved by painting a big diamond, and excluding all unreachable tiles, but not quite. So simple
+BFS did it again.
+
+# Day 22: Sand Slabs
+
+Another memory to last years Day 17...
