@@ -37,7 +37,7 @@ data class Point(val x: Int, val y: Int, val z: Int = 0) {
                 x != other.x -> add(this@Point.copy(x = i + x))
                 y != other.y -> add(this@Point.copy(y = i + y))
                 z != other.z -> add(this@Point.copy(z = i + z))
-
+                else -> add(this@Point)
             }
         }
     }
