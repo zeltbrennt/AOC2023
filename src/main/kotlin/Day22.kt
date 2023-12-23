@@ -23,7 +23,8 @@ class Day22(private val input: List<String> = loadAsList(day = 22)) {
         val x get() = minOf(a.x, b.x)
         val y get() = minOf(a.y, b.y)
         val z get() = minOf(a.z, b.z)
-        var support = listOf<Int>()
+        var supportedBy = listOf<Brick>()
+        var supports = listOf<Brick>()
 
         override fun compareTo(other: Brick): Int = this.z.compareTo(other.z)
 
@@ -34,16 +35,20 @@ class Day22(private val input: List<String> = loadAsList(day = 22)) {
 
         fun canFallDown(otherBricks: List<Brick>): Boolean {
             if (z == 1) return false
-            getSupport(otherBricks)
-            return support.isEmpty()
+            getPassiveSupport(otherBricks)
+            return supportedBy.isEmpty()
         }
 
-        fun getSupport(otherBricks: List<Brick>) {
+        fun getPassiveSupport(otherBricks: List<Brick>) {
             val target = this.copy(a = a.down, b = b.down).cubes subtract this.cubes.toSet()
-            val obstacles = otherBricks.associate { it.id to it.cubes }
-            support = obstacles
-                .filter { obstacle -> obstacle.value.any { it in target } }
-                .map { it.key }
+            supportedBy = otherBricks
+                .filter { obstacle -> obstacle.cubes.any { it in target } }
+        }
+
+        fun getActiveSupport(otherBricks: List<Brick>) {
+            val target = this.copy(a = a.up, b = b.up).cubes subtract this.cubes.toSet()
+            supports = otherBricks
+                .filter { obstacle -> obstacle.cubes.any { it in target } }
         }
     }
 
@@ -75,12 +80,14 @@ class Day22(private val input: List<String> = loadAsList(day = 22)) {
         //bricks.forEach(::println)
         printBricks()
         bricks.forEach { brick ->
-            val obstacles = bricks.filter { it.z < brick.z }//.takeLast(50)
-            while (brick.canFallDown(obstacles)) brick.fallDown()
+            val bricksBelow = bricks//.filter { it.z + it.height <= brick.z }//.takeLast(50)
+            while (brick.canFallDown(bricksBelow)) brick.fallDown()
         }
         println()
+        bricks.forEach { brick -> brick.getActiveSupport(bricks) }//.filter { it.z >= brick.z + brick.height }) }
         printBricks()
-        return bricks.size - bricks.filter { it.support.size == 1 }.flatMap { it.support }.distinct().size
+        bricks.filter { brick -> brick.supports.all { it.supportedBy.size > 1 } }
+        return bricks.filter { brick -> brick.supports.all { it.supportedBy.size > 1 } }.size
         //436 too high
     }
 
